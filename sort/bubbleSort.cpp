@@ -1,23 +1,18 @@
 #include <iostream>
+#include "utils.h"
 using namespace std;
 
 void bubbleSort (int arr[], int n){
-    for (int i = 0; i < n -1 ; i++){
-        for (int j = 0; j < n - i -1; j++){
+    for (int i = 0; i < n ; i++){
+        // After each iteration, the largest element 'bubbles' to the end
+        // So we don't need to compare with the last i elements that are already sorted
+        for (int j = 0; j < n - i -1; j++){ 
               if (arr[j] > arr[j + 1]){
                 swap(arr[j], arr[j + 1]);
               }
         }
     }
 }
-
-void printArray(int array[], int size) {
-  for (int i = 0; i < size; i++) {
-    cout << array[i] << " ";
-  }
-  cout << endl;
-}
-
 
 int main (){
     int n = 7;
