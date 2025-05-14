@@ -2,57 +2,61 @@
 #include <string>
 using namespace std;
 
-struct stack{
-	int a[10];
-	int top;
+#define N 10
+
+class Stack {
+private:
+  int myTop;
+  int stack[N];
+
+public:
+  Stack() { myTop = -1; };
+
+  bool isEmpty() { return myTop == -1; };
+  bool isFull() { return myTop == N - 1; };
+  void push(int val);
+  int pop();
+  void print();
 };
 
-void create (struct stack *s){
-	s->top=-1;	
+void Stack::push(int val) {
+  if (Stack::isFull()) {
+    cout << "Stack is full!";
+    return;
+  }
+  stack[++myTop] = val;
 };
 
-int isFull(struct stack *s){
-	if(s->top == 9)
-		return 1;
-	else
-		return 0;
-}
+int Stack::pop() {
+  if (Stack::isEmpty()) {
+    cout << "Stack is empty!";
+    return 0;
+  };
+  return stack[myTop--];
+};
 
-void push(struct stack *s){
-	int x;
-	cout<<"Enter number: ";
-	cin>>x;
-	 if(isFull(s))
-	 	cout<<"Full";
-	else
-	{
-		s->top++;
-		s->a[s->top]=x;
-	}
-}
+void Stack::print() {
+  if (Stack::isEmpty()) {
+    cout << "Stack is empty";
+    return;
+  };
+  cout << "The stack elements:";
+  for (int i = myTop; i >= 0; i--) {
+    cout << stack[i] << ", ";
+  }
+};
 
-void pop (struct stack *s){
-	
-	if(isFull(s))
-		cout<<"full";
-	else
-	{
-		cout<<"Pop the: "<< s->a[s->top];
-		s->top--;
-	}
-}
+int main() {
+  Stack s;
 
-int main (){
-	struct stack *x;
-	
-	create(x);
-	
-	push(x);
-	push(x);
-	push(x);
-	
-	pop(x);
-	
-	return 0;
-}
+  s.push(1);
+  s.push(2);
+  s.push(3);
+  s.push(4);
+  s.push(5);
 
+  s.pop();
+  s.print();
+
+  return 0;
+}
