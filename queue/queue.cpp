@@ -34,4 +34,14 @@ int Queue::delQueue() {
   return items[front++];
 }
 
+int Queue::process() {
+
+  if (empty()) {
+    cout << "Queue is empty";
+    return;
+  };
+
+  return items[front++];
+}
+
 int main() { return 0; };
