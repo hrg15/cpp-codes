@@ -1,95 +1,130 @@
 #include <iostream>
 using namespace std;
-class LL {
-public:
-  double value;
-  LL *next;
+struct Node {
+  int data;
+  Node *next;
+
+  // Node(int val):  data(val), next(nullptr) {};
 };
 
-class Sarlist {
-public:
-  long int size;
-  LL *First;
-  Sarlist() {
-    size = 0;
-    First = nullptr;
-  }
-  ~Sarlist() {
-    LL *p, *q;
-    p = First;
-    while (p != nullptr) {
-      q = p->next;
-      delete p;
-      p = q;
-    }
-  }
-  long int Size() { return size; }
-  bool empty() {
-    if (First == nullptr)
-      return true;
-    else
-      return false;
-  }
-  LL *Insert_First(double x) {
-    LL *p;
-    p = new LL;
-    p->value = x;
-    p->next = First;
-    First = p;
-    size++;
-    return p;
-  }
-  void Delete_First(void) {
-    LL *p;
-    p = First;
-    First = First->next;
-    size--;
-    delete p;
-  }
-
-  void print() {
-    LL *p;
-    p = First;
-    while (p != nullptr) {
-      cout << p->value << ",";
-      p = p->next;
-    }
-  }
+Node *getNode() {
+  Node *newNode;
+  newNode = new Node;
+  newNode->next = nullptr;
+  return newNode;
 };
 
-LL *Insert_First(LL *First, double x) {
-  LL *p;
-  p = new LL;
-  p->value = x;
-  p->next = First;
-  //        First =p;
-  //     size++;
-  return p;
-}
-void print(LL *first) {
-  LL *p;
-  p = first;
-  while (p != nullptr) {
-    cout << p->value << ",";
-    p = p->next;
+class linkedList {
+public:
+  Node *head;
+  linkedList() : head(nullptr) {};
+
+  bool isEmpty() { return head == nullptr; };
+
+  void insertAtBeginning(int val) {
+    Node *newNode = getNode();
+    newNode->data = val;
+    newNode->next = head;
+    head = newNode;
+  };
+
+  void deleteBeginning() {
+    Node *ptr;
+    ptr = head;
+    head = head->next;
+    delete ptr;
+  };
+
+  void insertAtEnd(int val) {
+    Node *newNode = getNode();
+    newNode->data = val;
+    if (isEmpty()) {
+      head = newNode;
+      return;
+    };
+
+    Node *current = head;
+    while (current->next != nullptr) {
+      current = current->next;
+    };
+    current->next = newNode;
+  };
+
+  void deleteElement(int val) {
+    if (isEmpty()) {
+      cout << "Nothing to delete.";
+    }
+    if (val == head->data) {
+      Node *temp = head;
+      head = head->next;
+      delete temp;
+      return;
+    };
+
+    Node *current = head;
+    while (current->next != nullptr && current->next->data != val) {
+      current = current->next;
+    }
+
+    if (current != nullptr) {
+      Node *temp = current->next;
+      current->next = temp->next;
+      delete temp;
+    } else {
+      cout << "Element not found.";
+    }
+  }
+  bool search(int val) {
+    Node *current = head;
+    while (current != nullptr) {
+      if (current->data == val) {
+        return true;
+      }
+      current = current->next;
+    }
+    return false;
+  }
+  ~linkedList() {
+    Node *current = head;
+    while (current != nullptr) {
+      Node *next = current->next;
+      delete current;
+      current = next;
+    }
+    head = nullptr;
+  }
+  void printList();
+};
+
+void linkedList::printList() {
+  Node *current = head;
+  while (current != nullptr) {
+    cout << current->data << " -> ";
+    current = current->next;
   }
 }
+
+void printRecursive(Node *l) {
+  if (l != nullptr) {
+    printRecursive(l->next);
+    cout << l->data << " -> ";
+  }
+};
 
 int main() {
-  Sarlist A;
-  LL *first = nullptr;
-  first = Insert_First(first, 5);
-  print(first);
-  cout << "\n Print-1\n ";
-  A.print();
-  A.Insert_First(21);
-  A.Insert_First(55);
-  A.Insert_First(22);
-  cout << "\n Print-2\n ";
-  A.print();
-  A.Delete_First();
-  cout << "\n Print-3\n ";
-  A.print();
+  linkedList list;
 
+  list.insertAtBeginning(3);
+  list.insertAtBeginning(2);
+  list.insertAtBeginning(1);
+  list.insertAtEnd(85);
+  list.printList();
+  printRecursive(list.head);
+  bool result = list.search(85);
+  if (result) {
+    cout << "Found!";
+  } else {
+    cout << "Not Found.";
+  }
   return 0;
 }
